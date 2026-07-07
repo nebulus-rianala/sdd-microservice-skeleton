@@ -1,0 +1,119 @@
+openapi: 3.1.0
+info:
+  title: "{{SERVICE_NAME}} Service API"
+  version: "1.0.0"
+  description: >
+    Authoritative API contract for {{SERVICE_NAME}}. Every endpoint implementation must
+    match this file exactly (docs/skills/implement-feature.md step 7). If a story requires
+    a contract change, update this file in the same change — never let code and contract
+    drift.
+
+servers:
+  - url: "{{API_BASE}}"
+    description: "e.g. https://api.centraltest.com/{{SERVICE_NAME}}/v1"
+
+tags:
+  - name: "{{DOMAIN_ROOT_ENTITY}}"
+    description: "Public, Kong-authenticated endpoints for {{DOMAIN_ROOT_ENTITY}}"
+  - name: internal
+    description: "Internal endpoints — protected by X-Internal-Api-Key, called service-to-service, never through Kong consumer auth"
+
+components:
+  securitySchemes:
+    InternalApiKey:
+      type: apiKey
+      in: header
+      name: X-Internal-Api-Key
+      description: >
+        Required on every /internal/* route. Public routes carry no security scheme here
+        because authentication is performed by Kong upstream (see
+        docs/security/api-security.md) — this service trusts X-Consumer-Groups /
+        X-Consumer-Id without an OpenAPI-expressible scheme for them.
+
+  parameters:
+    ConsumerGroups:
+      name: X-Consumer-Groups
+      in: header
+      required: true
+      schema:
+        type: string
+      description: "Forwarded by Kong. Caller role, e.g. evaluator | admin. Trusted without re-verification."
+    ConsumerId:
+      name: X-Consumer-Id
+      in: header
+      required: true
+      schema:
+        type: integer
+      description: "Forwarded by Kong. Caller's tenant/company scope (typically s_odoo_partner_id). Trusted without re-verification."
+
+  schemas:
+    ProblemDetails:
+      type: object
+      description: "RFC 9457 Problem Details — the shape of every error response."
+      properties:
+        type:
+          type: string
+          format: uri
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+        instance:
+          type: string
+          format: uri
+      required: [type, title, status]
+
+  responses:
+    BadRequest:
+      description: Malformed request
+      content:
+        application/problem+json:
+          schema: { $ref: "#/components/schemas/ProblemDetails" }
+    Unauthorized:
+      description: Missing/invalid X-Internal-Api-Key on an /internal/* route
+      content:
+        application/problem+json:
+          schema: { $ref: "#/components/schemas/ProblemDetails" }
+    Forbidden:
+      description: Authenticated by Kong but not authorized for this resource/tenant
+      content:
+        application/problem+json:
+          schema: { $ref: "#/components/schemas/ProblemDetails" }
+    NotFound:
+      description: Resource not found
+      content:
+        application/problem+json:
+          schema: { $ref: "#/components/schemas/ProblemDetails" }
+    UnprocessableEntity:
+      description: Validation failure or invalid state-machine transition
+      content:
+        application/problem+json:
+          schema: { $ref: "#/components/schemas/ProblemDetails" }
+
+paths:
+  # DECISION: this is a stub. Generator 1 (docs/skills/generate-technical-spec.md) fills
+  # in real paths from the functional spec's flows during the interview + generation
+  # phases, and every subsequent story keeps this file in sync (see
+  # docs/skills/implement-feature.md step 7).
+  #
+  # /{{DOMAIN_ROOT_ENTITY_PLURAL}}:
+  #   get:
+  #     tags: ["{{DOMAIN_ROOT_ENTITY}}"]
+  #     parameters:
+  #       - $ref: "#/components/parameters/ConsumerGroups"
+  #       - $ref: "#/components/parameters/ConsumerId"
+  #     responses:
+  #       "200": { description: Paginated list }
+  #       "403": { $ref: "#/components/responses/Forbidden" }
+  #
+  # /internal/{{SYNC_OPERATION}}:
+  #   post:
+  #     tags: [internal]
+  #     security:
+  #       - InternalApiKey: []
+  #     responses:
+  #       "200": { description: OK }
+  #       "401": { $ref: "#/components/responses/Unauthorized" }
+  {}

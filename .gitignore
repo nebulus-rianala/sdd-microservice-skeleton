@@ -1,0 +1,26 @@
+# Dependencies
+/vendor/
+/node_modules/
+/.venv/
+__pycache__/
+*.pyc
+
+# Environment
+.env
+.env.*.local
+
+# IDE
+.idea/
+.vscode/*
+!.vscode/settings.json
+
+# OS
+.DS_Store
+
+# Local Claude Code settings (keep settings.json, ignore local overrides)
+.claude/settings.local.json
+
+# Build artifacts
+/build/
+/dist/
+*.log
