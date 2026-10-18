@@ -2,7 +2,7 @@
 
 Ref: OWASP ASVS, NIST SSDF.
 
-**Applicability**: in the default Key Predict architecture, Kong owns authentication and
+**Applicability**: in the default skeleton architecture, Kong owns authentication and
 this service implements none (see `api-security.md`'s "Authentication boundary"). This
 file applies only when a service is itself the authentication authority — e.g. an
 identity-provider-style service, or a service issuing its own bearer tokens to

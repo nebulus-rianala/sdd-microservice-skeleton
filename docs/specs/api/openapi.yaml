@@ -10,7 +10,7 @@ info:
 
 servers:
   - url: "{{API_BASE}}"
-    description: "e.g. https://api.centraltest.com/{{SERVICE_NAME}}/v1"
+    description: "e.g. https://api.example.com/{{SERVICE_NAME}}/v1"
 
 tags:
   - name: "{{DOMAIN_ROOT_ENTITY}}"
@@ -44,7 +44,7 @@ components:
       required: true
       schema:
         type: integer
-      description: "Forwarded by Kong. Caller's tenant/company scope (typically s_odoo_partner_id). Trusted without re-verification."
+      description: "Forwarded by Kong. Caller's tenant/company scope (typically s_crm_partner_id). Trusted without re-verification."
 
   schemas:
     ProblemDetails:

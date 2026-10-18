@@ -102,6 +102,6 @@ spec to match whatever the code happened to do.
 
 - [ ] `CLAUDE.md` — `{{SERVICE_NAME}}`, `{{STACK}}`, `{{DB}}`, `{{ID_PREFIX}}`, `{{API_BASE}}`
 - [ ] `docs/specs/functional/` — at least one functional spec file
-- [ ] `README.md` — `{{SERVICE_NAME}}` (top-level title placeholder)
+- [ ] `README.md` — replace the skeleton introduction with a description of your service
 - [ ] Run generator 1, 2, 3 in order — do not skip generator 1 by hand-writing the
       technical spec; the interview is what catches unstated assumptions

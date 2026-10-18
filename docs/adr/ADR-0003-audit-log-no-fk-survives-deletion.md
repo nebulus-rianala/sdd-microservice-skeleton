@@ -2,7 +2,7 @@
 
 **Date:** {{SERVICE_INCEPTION_DATE}}
 **Status:** Accepted
-**Deciders:** Key Predict platform convention
+**Deciders:** Skeleton platform convention
 
 ## Context
 

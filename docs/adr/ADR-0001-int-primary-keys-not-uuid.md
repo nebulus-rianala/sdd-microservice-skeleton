@@ -2,14 +2,14 @@
 
 **Date:** {{SERVICE_INCEPTION_DATE}}
 **Status:** Accepted
-**Deciders:** Key Predict platform convention
+**Deciders:** Skeleton platform convention
 
 ## Context
 
-Every Key Predict microservice sits in a closed ecosystem behind Kong: the Central Test
-platform (V2 and V3 alike) uses `INT` auto-increment identifiers throughout, and
-cross-service references already follow an `s_`-prefixed integer convention (e.g.
-`s_odoo_partner_id`, `s_participant_id`). Introducing UUIDs in a new service would create
+Every microservice built from this skeleton sits in a closed ecosystem behind Kong: the
+platform these conventions were extracted from uses `INT` auto-increment identifiers
+throughout, and cross-service references already follow an `s_`-prefixed integer convention (e.g.
+`s_crm_partner_id`, `s_participant_id`). Introducing UUIDs in a new service would create
 a second, incompatible ID convention at every integration boundary for no isolation
 benefit — these are internal microservices behind a gateway, not public-facing systems
 where ID unguessability matters.
@@ -17,7 +17,7 @@ where ID unguessability matters.
 ## Decision
 
 All primary keys are `INT` auto-increment. Cross-service references are plain `INT`
-columns prefixed `s_` (e.g. `s_odoo_partner_id`), never a foreign key into another
+columns prefixed `s_` (e.g. `s_crm_partner_id`), never a foreign key into another
 service's database, and never a UUID.
 
 - Laravel: Eloquent default (`$incrementing = true`, `$keyType = 'int'`) — do not override.

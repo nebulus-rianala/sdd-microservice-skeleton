@@ -6,7 +6,7 @@
 
 ## Overview
 
-{{SERVICE_NAME}} is a Key Predict (Central Test) microservice. {{ONE_PARAGRAPH_SERVICE_DESCRIPTION}}
+{{SERVICE_NAME}} is a Kong-fronted microservice built from the SDD Microservice Skeleton. {{ONE_PARAGRAPH_SERVICE_DESCRIPTION}}
 
 Before implementing anything, read `docs/specs/technical/{{SERVICE_NAME}}-technical-spec.md`
 in full — it is the authoritative specification. This file (`CLAUDE.md`) covers
@@ -40,7 +40,7 @@ These are non-negotiable. A generated change that violates one of these must not
 merged, regardless of what a story or plan says.
 
 - **No UUIDs.** All primary keys are `INT` auto-increment (see ADR-0001). Cross-service
-  references use the `s_` prefix convention (e.g. `s_odoo_partner_id`) and are plain
+  references use the `s_` prefix convention (e.g. `s_crm_partner_id`) and are plain
   `INT`, never a foreign key to another service's database.
 - **No auth middleware.** Kong API Gateway owns authentication, CORS, rate limiting, and
   TLS termination. This service trusts Kong-forwarded headers (`X-Consumer-Groups`,
@@ -103,7 +103,7 @@ mapped to HTTP 422, and every transition writes an immutable history row.
 
 ## API Base URL & Endpoints
 
-**Base URL:** `{{API_BASE}}` (e.g. `https://api.centraltest.com/{{SERVICE_NAME}}/v1`)
+**Base URL:** `{{API_BASE}}` (e.g. `https://api.example.com/{{SERVICE_NAME}}/v1`)
 
 | Method | Path | Purpose | Caller |
 |---|---|---|---|
@@ -119,7 +119,7 @@ Full contract: `docs/specs/api/openapi.yaml`. The spec's `§API Reference` /
 | {{ROLE}} | `X-Consumer-Groups: {{ROLE_VALUE}}` | {{SCOPE_DESCRIPTION}} |
 | Internal service | `X-Internal-Api-Key` (env `INTERNAL_API_KEY`) | `/internal/*` routes only |
 
-`X-Consumer-Id` carries the caller's company/tenant scope (typically `s_odoo_partner_id`
+`X-Consumer-Id` carries the caller's company/tenant scope (typically `s_crm_partner_id`
 in this ecosystem) — every query must be filtered by it unless the caller's group grants
 cross-tenant access. These headers are trusted without verification: Kong guarantees they
 cannot be forged by an external caller. Do not implement header signature verification,
@@ -131,7 +131,7 @@ All error responses are RFC 9457 Problem Details (`application/problem+json`):
 
 ```json
 {
-  "type": "https://api.centraltest.com/problems/{{PROBLEM_SLUG}}",
+  "type": "https://api.example.com/problems/{{PROBLEM_SLUG}}",
   "title": "{{HUMAN_READABLE_TITLE}}",
   "status": 422,
   "detail": "{{SPECIFIC_DETAIL_SAFE_FOR_CLIENT}}",

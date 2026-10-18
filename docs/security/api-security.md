@@ -17,7 +17,7 @@ re-verification — Kong ensures they cannot be forged by an external caller.
 | Header | Meaning |
 |---|---|
 | `X-Consumer-Groups` | Caller's role (e.g. `evaluator`, `admin`) |
-| `X-Consumer-Id` | Caller's tenant/company scope (typically `s_odoo_partner_id` in this ecosystem) — **not** a personal user ID |
+| `X-Consumer-Id` | Caller's tenant/company scope (typically `s_crm_partner_id` in this ecosystem) — **not** a personal user ID |
 
 Do not implement header-signature verification — Kong handles this upstream. Do not
 assume a header's absence means "no caller"; treat a missing expected header as a
